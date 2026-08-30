@@ -9,6 +9,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Visual Studio Build Tools 2022
+        uses: microsoft/setup-msbuild@v2
+        with:
+          vs-version: '17.0'
+
+      - name: Install Desktop development with C++ workload
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          choco install visualstudio2022buildtools --package-parameters "--includeRecommended --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041" -y
+          refreshenv
+        continue-on-error: true
+
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.5'
