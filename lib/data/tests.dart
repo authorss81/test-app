@@ -9,10 +9,10 @@ import '../models/test_item.dart';
 
 List<TestItem> getTests() {
   final list = <TestItem>[
-    // 1
+// 1 — full marks
     _t(
       title: 'AIATS - AIATS-01 (Paper-2)',
-      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
+      date: "21 Aug'26, 9:00 AM - 23 Aug'26, 9:00 AM",
       total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
@@ -21,7 +21,7 @@ List<TestItem> getTests() {
       chemC: 30, mathC: 30, phyC: 30, q: 30,
       chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 2
+    // 2 — full marks
     _t(
       title: 'AIATS - AIATS-01 (Paper-1)',
       date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
@@ -192,31 +192,7 @@ List<TestItem> getTests() {
       chemC: 30, mathC: 30, phyC: 30, q: 30,
       chemT: 50, mathT: 70, phyT: 60,
     ),
-    // === Latest two ===
-    // Second-to-last: 1 wrong in Chem, AIR 1, all ranks 1
-    _t(
-      title: 'AIATS - AIATS-01 (Paper-2)',
-      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
-      total: 360,
-      score: 355,
-      correct: 89, incorrect: 1, unattempted: 0,
-      air: 1, state: 1, batch: 1, branch: 1,
-      chemScore: 116, mathScore: 120, phyScore: 120,
-      chemC: 29, mathC: 30, phyC: 30, q: 30,
-      chemT: 50, mathT: 70, phyT: 60,
-    ),
-    // Last: 1 wrong in Phy, AIR 2, State 1, Batch 1
-    _t(
-      title: 'AIATS - AIATS-01 (Paper-1)',
-      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
-      total: 360,
-      score: 355,
-      correct: 89, incorrect: 1, unattempted: 0,
-      air: 2, state: 1, batch: 1, branch: 1,
-      chemScore: 120, mathScore: 120, phyScore: 116,
-      chemC: 30, mathC: 30, phyC: 29, q: 30,
-chemT: 50, mathT: 70, phyT: 60,
-    ),
+// (No additional latest-two block — keep unique tests only.)
   ];
   // Sort by end-date descending (newest first).
   // Date format: "DD Mon'YY, 9:00 AM - DD Mon'YY, 9:00 AM"

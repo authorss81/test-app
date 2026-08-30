@@ -45,6 +45,8 @@ The two newest tests (last in the list, shown at the bottom of the **newest-firs
 
 This ensures the user always has an "almost topped" pair at the very bottom.
 
+*Note:* tests must be **unique**. Do NOT add a separate "latest-two" block — the top 2 entries of the main list serve as the latest-two. The first two `_t(...)` entries should already be the Paper-2 (newer) then Paper-1 (oldest) pair with 1 wrong each.
+
 ## Time distribution (always)
 
 Total = 180 min (3 hours), split:
