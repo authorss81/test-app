@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+import 'dart:math' as mmath;
 import 'package:flutter/material.dart';
 import '../models/test_item.dart';
 
@@ -351,7 +351,7 @@ class _GaugePainter extends CustomPainter {
     final stroke = 14.0;
     final rect = Rect.fromCircle(
       center: Offset(size.width / 2, size.height),
-      radius: math.min(size.width / 2, size.height) - stroke / 2,
+      radius: mmath.min(size.width / 2, size.height) - stroke / 2,
     );
 
     final bg = Paint()
@@ -359,19 +359,19 @@ class _GaugePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
-    canvas.drawArc(rect, math.pi, math.pi, false, bg);
+    canvas.drawArc(rect, mmath.pi, mmath.pi, false, bg);
 
     final fg = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke
       ..strokeCap = StrokeCap.round;
-    canvas.drawArc(rect, math.pi, math.pi * percent, false, fg);
+    canvas.drawArc(rect, mmath.pi, mmath.pi * percent, false, fg);
 
     // End dot
-    final angle = math.pi + math.pi * percent;
-    final cx = size.width / 2 + (size.width / 2 - stroke / 2) * math.cos(angle);
-    final cy = size.height + (size.height - stroke / 2) * math.sin(angle);
+    final angle = mmath.pi + mmath.pi * percent;
+    final cx = size.width / 2 + (size.width / 2 - stroke / 2) * mmath.cos(angle);
+    final cy = size.height + (size.height - stroke / 2) * mmath.sin(angle);
     canvas.drawCircle(Offset(cx, cy), stroke / 2 + 1,
         Paint()..color = color);
   }
@@ -396,7 +396,7 @@ class _BarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final maxV = [chemTotal, mathTotal, phyTotal].reduce(math.max);
+    final maxV = mmath.max(chemTotal, mmath.max(mathTotal, phyTotal));
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -475,4 +475,5 @@ class _BarChart extends StatelessWidget {
     );
   }
 }
+
 

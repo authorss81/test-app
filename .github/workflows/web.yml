@@ -1,0 +1,37 @@
+name: Build Web
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: stable
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze
+        run: flutter analyze --no-fatal-infos || true
+
+      - name: Build Web (release)
+        run: flutter build web --release --base-href "/"
+
+      - name: Zip build output
+        run: |
+          cd build/web
+          zip -r ../../web-build.zip .
+          cd ../..
+
+      - name: Upload Web ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: web-build.zip
+          if-no-files-found: error

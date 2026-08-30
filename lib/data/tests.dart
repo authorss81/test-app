@@ -1,4 +1,4 @@
-import 'test_item.dart';
+import '../models/test_item.dart';
 
 List<TestItem> getTests() {
   // Total marks rules:
