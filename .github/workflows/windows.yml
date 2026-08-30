@@ -9,18 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Visual Studio Build Tools 2022
-        uses: microsoft/setup-msbuild@v2
-        with:
-          vs-version: '17.0'
-
-      - name: Install Desktop development with C++ workload
+      - name: Show Visual Studio installations
         shell: pwsh
         run: |
-          $ErrorActionPreference = 'Stop'
-          choco install visualstudio2022buildtools --package-parameters "--includeRecommended --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.19041" -y
-          refreshenv
-        continue-on-error: true
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (Test-Path $vswhere) {
+            & $vswhere -products * -requires Microsoft.Component.MSBuild -property installationPath
+          } else {
+            Write-Host "vswhere not found"
+          }
 
       - uses: subosito/flutter-action@v2
         with:
