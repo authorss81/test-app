@@ -68,114 +68,16 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
 
               const Divider(height: 1, color: Color(0xFFEEEEEE)),
 
-              // Subject analysis card
+// Subject analysis card
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 14, 16, 24),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
-                        blurRadius: 10,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: const [
-                          Icon(Icons.radio_button_checked,
-                              size: 16, color: Color(0xFF1FA9E8)),
-                          SizedBox(width: 8),
-                          Text(
-                            'Subject Analysis',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 14),
-                      Row(
-                        children: [
-                          _pill('Score', 0),
-                          const SizedBox(width: 8),
-                          _pill('Accuracy', 1),
-                          const SizedBox(width: 8),
-                          _pill('Time', 2),
-                        ],
-                      ),
-                      const SizedBox(height: 18),
-                      SizedBox(
-                        height: 240,
-                        child: _tab == 0
-                            ? _BarChart(
-                                title: 'Score',
-                                values: const ['Chemistry', 'Mathematics', 'Physics'],
-                                vals: [
-                                  t.chemScore.toDouble(),
-                                  t.mathScore.toDouble(),
-                                  t.phyScore.toDouble(),
-                                ],
-                                totals: [
-                                  t.chemTotal.toDouble(),
-                                  t.mathTotal.toDouble(),
-                                  t.phyTotal.toDouble(),
-                                ],
-                                colors: const [
-                                  Color(0xFFF5A65B),
-                                  Color(0xFF8FE3DC),
-                                  Color(0xFFF58C95),
-                                ],
-                                yLabel: (v) => v.toInt().toString(),
-                              )
-                            : _tab == 1
-                                ? _BarChart(
-                                    title: 'Accuracy',
-                                    values: const ['Chemistry', 'Mathematics', 'Physics'],
-                                    vals: [
-                                      t.chemAcc * 100,
-                                      t.mathAcc * 100,
-                                      t.phyAcc * 100,
-                                    ],
-                                    totals: const [100, 100, 100],
-                                    colors: const [
-                                      Color(0xFFF5A65B),
-                                      Color(0xFF8FE3DC),
-                                      Color(0xFFF58C95),
-                                    ],
-                                    yLabel: (v) => '${v.toInt()}%',
-                                  )
-                                : _BarChart(
-                                    title: 'Time (min)',
-                                    values: const ['Chemistry', 'Mathematics', 'Physics'],
-                                    vals: [
-                                      t.chemTimeMin.toDouble(),
-                                      t.mathTimeMin.toDouble(),
-                                      t.phyTimeMin.toDouble(),
-                                    ],
-                                    totals: [
-                                      t.totalTimeMin.toDouble(),
-                                      t.totalTimeMin.toDouble(),
-                                      t.totalTimeMin.toDouble(),
-                                    ],
-                                    colors: const [
-                                      Color(0xFFF5A65B),
-                                      Color(0xFF8FE3DC),
-                                      Color(0xFFF58C95),
-                                    ],
-                                    yLabel: (v) => v.toInt().toString(),
-                                  ),
-                      ),
-                    ],
-                  ),
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+                child: _subjectCard(t),
+              ),
+
+              // Comparative analysis card
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                child: _comparativeCard(t),
               ),
             ],
           ),
@@ -346,7 +248,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   Widget _rankDivider() =>
       Container(height: 22, width: 1, color: const Color(0xFFE0E0E0));
 
-  Widget _rankItem(String label, int rank) {
+Widget _rankItem(String label, int rank) {
     return Column(
       children: [
         Text(label,
@@ -357,6 +259,206 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                 fontSize: 14,
                 fontWeight: FontWeight.w800,
                 color: Color(0xFF111111))),
+      ],
+    );
+  }
+
+  Widget _subjectCard(TestItem t) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.radio_button_checked,
+                  size: 16, color: Color(0xFF1FA9E8)),
+              SizedBox(width: 8),
+              Text(
+                'Subject Analysis',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              _pill('Score', 0),
+              const SizedBox(width: 8),
+              _pill('Accuracy', 1),
+              const SizedBox(width: 8),
+              _pill('Time', 2),
+            ],
+          ),
+          const SizedBox(height: 18),
+          SizedBox(
+            height: 240,
+            child: _tab == 0
+                ? _BarChart(
+                    title: 'Score',
+                    values: const ['Chemistry', 'Mathematics', 'Physics'],
+                    vals: [
+                      t.chemScore.toDouble(),
+                      t.mathScore.toDouble(),
+                      t.phyScore.toDouble(),
+                    ],
+                    totals: [
+                      t.chemTotal.toDouble(),
+                      t.mathTotal.toDouble(),
+                      t.phyTotal.toDouble(),
+                    ],
+                    colors: const [
+                      Color(0xFFF5A65B),
+                      Color(0xFF8FE3DC),
+                      Color(0xFFF58C95),
+                    ],
+                    yLabel: (v) => v.toInt().toString(),
+                  )
+                : _tab == 1
+                    ? _BarChart(
+                        title: 'Accuracy',
+                        values: const ['Chemistry', 'Mathematics', 'Physics'],
+                        vals: [
+                          t.chemAcc * 100,
+                          t.mathAcc * 100,
+                          t.phyAcc * 100,
+                        ],
+                        totals: const [100, 100, 100],
+                        colors: const [
+                          Color(0xFFF5A65B),
+                          Color(0xFF8FE3DC),
+                          Color(0xFFF58C95),
+                        ],
+                        yLabel: (v) => '${v.toInt()}%',
+                      )
+                    : _BarChart(
+                        title: 'Time (min)',
+                        values: const ['Chemistry', 'Mathematics', 'Physics'],
+                        vals: [
+                          t.chemTimeMin.toDouble(),
+                          t.mathTimeMin.toDouble(),
+                          t.phyTimeMin.toDouble(),
+                        ],
+                        totals: [
+                          t.totalTimeMin.toDouble(),
+                          t.totalTimeMin.toDouble(),
+                          t.totalTimeMin.toDouble(),
+                        ],
+                        colors: const [
+                          Color(0xFFF5A65B),
+                          Color(0xFF8FE3DC),
+                          Color(0xFFF58C95),
+                        ],
+                        yLabel: (v) => v.toInt().toString(),
+                      ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _comparativeCard(TestItem t) {
+    final chapterNames = const [
+      'Mole', 'Atomic', 'Thermo', 'Equilib', 'Organic', 's-Block', // Chemistry
+      'Algebra', 'Calculus', 'Coordinate', 'Trig', 'Probability', 'Vectors', // Mathematics
+      'Kinematics', 'Laws', 'Work', 'Electro', 'Optics', 'Modern', // Physics
+    ];
+    final data = t.chapterMarks; // [topper, me, average] per chapter
+    final topper = data[0];
+    final me = data[1];
+    final avg = data[2];
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: const [
+              Icon(Icons.compare_arrows,
+                  size: 16, color: Color(0xFF1FA9E8)),
+              SizedBox(width: 8),
+              Text(
+                'Comparative Analysis',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          // Legend
+          Row(
+            children: const [
+              _LegendDot(color: Color(0xFF1FA9E8), label: 'Topper'),
+              SizedBox(width: 12),
+              _LegendDot(color: Color(0xFFF5A65B), label: 'You'),
+              SizedBox(width: 12),
+              _LegendDot(color: Color(0xFFB0B0B0), label: 'Average'),
+            ],
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 240,
+            child: _GroupedBarChart(
+              chapterNames: chapterNames,
+              topper: topper,
+              me: me,
+              avg: avg,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _LegendDot extends StatelessWidget {
+  final Color color;
+  final String label;
+  const _LegendDot({required this.color, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 10,
+          height: 10,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 5),
+        Text(label,
+            style: const TextStyle(fontSize: 11, color: Color(0xFF555555))),
       ],
     );
   }
@@ -515,3 +617,108 @@ class _BarChart extends StatelessWidget {
 }
 
 
+
+
+class _GroupedBarChart extends StatelessWidget {
+  final List<String> chapterNames;
+  final List<int> topper;
+  final List<int> me;
+  final List<int> avg;
+  const _GroupedBarChart({
+    required this.chapterNames,
+    required this.topper,
+    required this.me,
+    required this.avg,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final all = [...topper, ...me, ...avg];
+    final maxV = all.isEmpty ? 1.0 : all.reduce(mmath.max).toDouble();
+    final niceMax = (maxV * 1.15).ceilToDouble();
+    final ticks = [0.0, 0.25, 0.5, 0.75, 1.0];
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 200,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 28,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: ticks
+                      .map((t) => Text(
+                            (niceMax * t).toInt().toString(),
+                            style: const TextStyle(
+                                fontSize: 9, color: Color(0xFF888888)),
+                          ))
+                      .toList(),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: List.generate(chapterNames.length, (i) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '${topper[i]}/${me[i]}/${avg[i]}',
+                              style: const TextStyle(
+                                fontSize: 8,
+                                color: Color(0xFF666666),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            SizedBox(
+                              height: 140,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  _bar(topper[i], niceMax, const Color(0xFF1FA9E8)),
+                                  const SizedBox(width: 2),
+                                  _bar(me[i], niceMax, const Color(0xFFF5A65B)),
+                                  const SizedBox(width: 2),
+                                  _bar(avg[i], niceMax, const Color(0xFFB0B0B0)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              width: 56,
+                              child: Text(
+                                chapterNames[i],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 9, color: Color(0xFF555555)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _bar(int v, double maxV, Color c) {
+    final h = maxV == 0 ? 0.0 : (v / maxV) * 130;
+    return Container(width: 8, height: h, color: c);
+  }
+}

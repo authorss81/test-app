@@ -13,12 +13,10 @@ jobs:
         with:
           flutter-version: '3.24.5'
           channel: stable
+          cache: true
 
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Analyze
-        run: flutter analyze --no-fatal-infos || true
 
       - name: Build Web (release)
         run: flutter build web --release --base-href "/"
