@@ -2,6 +2,13 @@
 cmake_minimum_required(VERSION 3.14)
 project(test_app LANGUAGES CXX)
 
+# Pin a known generator that exists on GitHub Actions windows-latest runners
+# (which ship Visual Studio 18 Enterprise). Override with CMAKE_GENERATOR env var.
+if(NOT DEFINED CMAKE_GENERATOR)
+  set(CMAKE_GENERATOR "Visual Studio 17 2022" CACHE STRING "" FORCE)
+  set(CMAKE_GENERATOR_PLATFORM "x64" CACHE STRING "" FORCE)
+endif()
+
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "test_app")
