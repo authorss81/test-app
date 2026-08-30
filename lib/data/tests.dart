@@ -8,7 +8,7 @@ import '../models/test_item.dart';
 // AIR: 1-3, State Rank: 1 or 2
 
 List<TestItem> getTests() {
-  return [
+  final list = <TestItem>[
     // 1
     _t(
       title: 'AIATS - AIATS-01 (Paper-2)',
@@ -215,9 +215,29 @@ List<TestItem> getTests() {
       air: 2, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 116,
       chemC: 30, mathC: 30, phyC: 29, q: 30,
-      chemT: 50, mathT: 70, phyT: 60,
+chemT: 50, mathT: 70, phyT: 60,
     ),
   ];
+  // Sort by end-date descending (newest first).
+  // Date format: "DD Mon'YY, 9:00 AM - DD Mon'YY, 9:00 AM"
+  int parseEndDate(String dateRange) {
+    final endStr = dateRange.split(' - ').last.trim();
+    final parts = endStr.split(' ');
+    if (parts.length < 2) return 0;
+    final day = int.tryParse(parts[0]) ?? 0;
+    const months = {
+      'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+      'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12,
+    };
+    final mon = months[parts[1].substring(0, 3)] ?? 0;
+    // Year: 'YY format => 20YY
+    final yearStr = parts[1].contains("'") ? parts[1].split("'")[1] : '0';
+    final year = 2000 + (int.tryParse(yearStr) ?? 0);
+    return year * 10000 + mon * 100 + day;
+  }
+
+  list.sort((a, b) => parseEndDate(b.dateRange).compareTo(parseEndDate(a.dateRange)));
+  return list;
 }
 
 TestItem _t({

@@ -372,15 +372,11 @@ Widget _rankItem(String label, int rank) {
   }
 
   Widget _comparativeCard(TestItem t) {
-    final chapterNames = const [
-      'Mole', 'Atomic', 'Thermo', 'Equilib', 'Organic', 's-Block', // Chemistry
-      'Algebra', 'Calculus', 'Coordinate', 'Trig', 'Probability', 'Vectors', // Mathematics
-      'Kinematics', 'Laws', 'Work', 'Electro', 'Optics', 'Modern', // Physics
-    ];
-    final data = t.chapterMarks; // [topper, me, average] per chapter
-    final topper = data[0];
-    final me = data[1];
-    final avg = data[2];
+    final subjects = const ['Chemistry', 'Mathematics', 'Physics'];
+    final data = t.subjectCompare; // [[topper,me,avg] per subject]
+    final topper = data.map((e) => e[0]).toList();
+    final me = data.map((e) => e[1]).toList();
+    final avg = data.map((e) => e[2]).toList();
 
     return Container(
       decoration: BoxDecoration(
@@ -426,8 +422,8 @@ Widget _rankItem(String label, int rank) {
           const SizedBox(height: 12),
           SizedBox(
             height: 240,
-            child: _GroupedBarChart(
-              chapterNames: chapterNames,
+            child: _SubjectCompareChart(
+              subjects: subjects,
               topper: topper,
               me: me,
               avg: avg,
@@ -436,6 +432,111 @@ Widget _rankItem(String label, int rank) {
         ],
       ),
     );
+  }
+}
+
+class _SubjectCompareChart extends StatelessWidget {
+  final List<String> subjects;
+  final List<int> topper;
+  final List<int> me;
+  final List<int> avg;
+  const _SubjectCompareChart({
+    required this.subjects,
+    required this.topper,
+    required this.me,
+    required this.avg,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final maxV = [...topper, ...me, ...avg].reduce(mmath.max).toDouble();
+    final niceMax = (maxV * 1.15).ceilToDouble();
+    final ticks = [0.0, 0.25, 0.5, 0.75, 1.0];
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 200,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 28,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: ticks
+                      .map((t) => Text(
+                            (niceMax * t).toInt().toString(),
+                            style: const TextStyle(
+                                fontSize: 9, color: Color(0xFF888888)),
+                          ))
+                      .toList(),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: List.generate(subjects.length, (i) {
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '${topper[i]}/${me[i]}/${avg[i]}',
+                              style: const TextStyle(
+                                fontSize: 9,
+                                color: Color(0xFF666666),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            SizedBox(
+                              height: 150,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  _bar(topper[i], niceMax,
+                                      const Color(0xFF1FA9E8)),
+                                  const SizedBox(width: 4),
+                                  _bar(me[i], niceMax,
+                                      const Color(0xFFF5A65B)),
+                                  const SizedBox(width: 4),
+                                  _bar(avg[i], niceMax,
+                                      const Color(0xFFB0B0B0)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 6),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: subjects
+              .map((s) => Text(s,
+                  style: const TextStyle(
+                      fontSize: 12, color: Color(0xFF333333))))
+              .toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _bar(int v, double maxV, Color c) {
+    final h = maxV == 0 ? 0.0 : (v / maxV) * 140;
+    return Container(width: 16, height: h, color: c);
   }
 }
 
@@ -616,109 +717,3 @@ class _BarChart extends StatelessWidget {
   }
 }
 
-
-
-
-class _GroupedBarChart extends StatelessWidget {
-  final List<String> chapterNames;
-  final List<int> topper;
-  final List<int> me;
-  final List<int> avg;
-  const _GroupedBarChart({
-    required this.chapterNames,
-    required this.topper,
-    required this.me,
-    required this.avg,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final all = [...topper, ...me, ...avg];
-    final maxV = all.isEmpty ? 1.0 : all.reduce(mmath.max).toDouble();
-    final niceMax = (maxV * 1.15).ceilToDouble();
-    final ticks = [0.0, 0.25, 0.5, 0.75, 1.0];
-
-    return Column(
-      children: [
-        SizedBox(
-          height: 200,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                width: 28,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: ticks
-                      .map((t) => Text(
-                            (niceMax * t).toInt().toString(),
-                            style: const TextStyle(
-                                fontSize: 9, color: Color(0xFF888888)),
-                          ))
-                      .toList(),
-                ),
-              ),
-              const SizedBox(width: 4),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: List.generate(chapterNames.length, (i) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 5),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '${topper[i]}/${me[i]}/${avg[i]}',
-                              style: const TextStyle(
-                                fontSize: 8,
-                                color: Color(0xFF666666),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            SizedBox(
-                              height: 140,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  _bar(topper[i], niceMax, const Color(0xFF1FA9E8)),
-                                  const SizedBox(width: 2),
-                                  _bar(me[i], niceMax, const Color(0xFFF5A65B)),
-                                  const SizedBox(width: 2),
-                                  _bar(avg[i], niceMax, const Color(0xFFB0B0B0)),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            SizedBox(
-                              width: 56,
-                              child: Text(
-                                chapterNames[i],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    fontSize: 9, color: Color(0xFF555555)),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _bar(int v, double maxV, Color c) {
-    final h = maxV == 0 ? 0.0 : (v / maxV) * 130;
-    return Container(width: 8, height: h, color: c);
-  }
-}
