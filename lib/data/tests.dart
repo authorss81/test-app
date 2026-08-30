@@ -4,6 +4,7 @@ import '../models/test_item.dart';
 // JEE Main: 300 marks (Phy/Che/Math 100 each), 25 Q each subject
 // Total time always 180 min. Distribution: Math > Phy > Chem
 // Wrongs only in Chem/Physics (no Math wrongs), max 1 wrong, no unattempted
+// Marks formula: incorrect = -5, unattempted = -4
 // AIR: 1-3, State Rank: 1 or 2
 
 List<TestItem> getTests() {
@@ -37,7 +38,7 @@ List<TestItem> getTests() {
       title: 'AIATS - AIATS-01',
       date: "16 Aug'26, 9:00 AM - 18 Aug'26, 9:00 AM",
       total: 360,
-      score: 356,
+      score: 355,
       correct: 89, incorrect: 1, unattempted: 0,
       air: 3, state: 2, batch: 1, branch: 1,
       chemScore: 116, mathScore: 120, phyScore: 120,
@@ -61,7 +62,7 @@ List<TestItem> getTests() {
       title: 'Term Exam - TE-01 (Paper-2)',
       date: "09 Aug'26, 9:00 AM - 11 Aug'26, 9:00 AM",
       total: 360,
-      score: 356,
+      score: 355,
       correct: 89, incorrect: 1, unattempted: 0,
       air: 2, state: 2, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 116,
@@ -110,7 +111,7 @@ List<TestItem> getTests() {
       title: 'AIATS - AIATS-03 (Paper-1)',
       date: "22 Mar'26, 9:00 AM - 24 Mar'26, 9:00 AM",
       total: 360,
-      score: 356,
+      score: 355,
       correct: 89, incorrect: 1, unattempted: 0,
       air: 2, state: 2, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 116,
@@ -159,7 +160,7 @@ List<TestItem> getTests() {
       title: 'AIATS - AIATS-02 (JEE Main)',
       date: "01 Mar'26, 9:00 AM - 03 Mar'26, 9:00 AM",
       total: 300,
-      score: 296,
+      score: 295,
       correct: 74, incorrect: 1, unattempted: 0,
       air: 3, state: 2, batch: 1, branch: 1,
       chemScore: 96, mathScore: 100, phyScore: 100,
@@ -197,7 +198,7 @@ List<TestItem> getTests() {
       title: 'AIATS - AIATS-01 (Paper-2)',
       date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
       total: 360,
-      score: 356,
+      score: 355,
       correct: 89, incorrect: 1, unattempted: 0,
       air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 116, mathScore: 120, phyScore: 120,
@@ -209,7 +210,7 @@ List<TestItem> getTests() {
       title: 'AIATS - AIATS-01 (Paper-1)',
       date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
       total: 360,
-      score: 356,
+      score: 355,
       correct: 89, incorrect: 1, unattempted: 0,
       air: 2, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 116,
