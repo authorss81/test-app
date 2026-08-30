@@ -77,7 +77,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
@@ -293,13 +293,13 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
           Positioned(
             left: -10,
             top: -10,
-            child: Icon(Icons.star, size: 80, color: Colors.white.withValues(alpha: 0.18)),
+            child: Icon(Icons.star, size: 80, color: Colors.white.withOpacity(0.18)),
           ),
           Positioned(
             right: 20,
             bottom: -8,
             child: Icon(Icons.star_border,
-                size: 70, color: Colors.white.withValues(alpha: 0.18)),
+                size: 70, color: Colors.white.withOpacity(0.18)),
           ),
           Column(
             children: [
@@ -513,3 +513,5 @@ class _BarChart extends StatelessWidget {
     );
   }
 }
+
+
