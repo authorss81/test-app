@@ -13,12 +13,18 @@ class TestItem {
   final int stateRank;
   final int batchRank;
   final int branchRank;
-  final int chemScore;
-  final int mathScore;
-  final int phyScore;
-  final int chemTotal;
-  final int mathTotal;
-  final int phyTotal;
+
+  final int chemScore, mathScore, phyScore;
+  final int chemTotal, mathTotal, phyTotal;
+
+  // Per-subject correct/total (out of question count, not marks)
+  final int chemCorrect, chemQuestions;
+  final int mathCorrect, mathQuestions;
+  final int phyCorrect, phyQuestions;
+
+  // Time spent per subject in minutes
+  final int chemTimeMin, mathTimeMin, phyTimeMin;
+  final int totalTimeMin;
 
   TestItem({
     required this.title,
@@ -41,5 +47,19 @@ class TestItem {
     required this.chemTotal,
     required this.mathTotal,
     required this.phyTotal,
+    required this.chemCorrect,
+    required this.chemQuestions,
+    required this.mathCorrect,
+    required this.mathQuestions,
+    required this.phyCorrect,
+    required this.phyQuestions,
+    required this.chemTimeMin,
+    required this.mathTimeMin,
+    required this.phyTimeMin,
+    required this.totalTimeMin,
   });
+
+  double get chemAcc => chemQuestions == 0 ? 0 : chemCorrect / chemQuestions;
+  double get mathAcc => mathQuestions == 0 ? 0 : mathCorrect / mathQuestions;
+  double get phyAcc => phyQuestions == 0 ? 0 : phyCorrect / phyQuestions;
 }

@@ -2,19 +2,27 @@ import 'dart:math' as mmath;
 import 'package:flutter/material.dart';
 import '../models/test_item.dart';
 
-class AnalysisScreen extends StatelessWidget {
+class AnalysisScreen extends StatefulWidget {
   final TestItem test;
   const AnalysisScreen({super.key, required this.test});
 
   @override
+  State<AnalysisScreen> createState() => _AnalysisScreenState();
+}
+
+class _AnalysisScreenState extends State<AnalysisScreen> {
+  int _tab = 0; // 0 Score, 1 Accuracy, 2 Time
+
+  @override
   Widget build(BuildContext context) {
+    final t = widget.test;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Top blue header
+              // Header
               Container(
                 width: double.infinity,
                 color: const Color(0xFFD7E9F4),
@@ -36,7 +44,7 @@ class AnalysisScreen extends StatelessWidget {
                 ),
               ),
 
-              // Light blue body area
+              // Body
               Container(
                 width: double.infinity,
                 decoration: const BoxDecoration(
@@ -49,27 +57,15 @@ class AnalysisScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
                 child: Column(
                   children: [
-                    _scoreRow(),
+                    _scoreRow(t),
                     const SizedBox(height: 18),
-                    _airCard(),
+                    _airCard(t),
                     const SizedBox(height: 12),
-                    _ranksRow(),
+                    _ranksRow(t),
                   ],
                 ),
               ),
 
-              // Tabs row
-              Container(
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    _tabLabel('Summary', false),
-                    _tabLabel('Subject Analysis', true),
-                    _tabLabel('Comparative Analysis', false),
-                    _tabLabel('Chap...', false),
-                  ],
-                ),
-              ),
               const Divider(height: 1, color: Color(0xFFEEEEEE)),
 
               // Subject analysis card
@@ -81,7 +77,7 @@ class AnalysisScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 10,
                         offset: const Offset(0, 2),
                       ),
@@ -108,24 +104,74 @@ class AnalysisScreen extends StatelessWidget {
                       const SizedBox(height: 14),
                       Row(
                         children: [
-                          _pillTab('Score', true),
+                          _pill('Score', 0),
                           const SizedBox(width: 8),
-                          _pillTab('Accuracy', false),
+                          _pill('Accuracy', 1),
                           const SizedBox(width: 8),
-                          _pillTab('Time', false),
+                          _pill('Time', 2),
                         ],
                       ),
                       const SizedBox(height: 18),
                       SizedBox(
                         height: 240,
-                        child: _BarChart(
-                          chem: test.chemScore.toDouble(),
-                          math: test.mathScore.toDouble(),
-                          phy: test.phyScore.toDouble(),
-                          chemTotal: test.chemTotal.toDouble(),
-                          mathTotal: test.mathTotal.toDouble(),
-                          phyTotal: test.phyTotal.toDouble(),
-                        ),
+                        child: _tab == 0
+                            ? _BarChart(
+                                title: 'Score',
+                                values: const ['Chemistry', 'Mathematics', 'Physics'],
+                                vals: [
+                                  t.chemScore.toDouble(),
+                                  t.mathScore.toDouble(),
+                                  t.phyScore.toDouble(),
+                                ],
+                                totals: [
+                                  t.chemTotal.toDouble(),
+                                  t.mathTotal.toDouble(),
+                                  t.phyTotal.toDouble(),
+                                ],
+                                colors: const [
+                                  Color(0xFFF5A65B),
+                                  Color(0xFF8FE3DC),
+                                  Color(0xFFF58C95),
+                                ],
+                                yLabel: (v) => v.toInt().toString(),
+                              )
+                            : _tab == 1
+                                ? _BarChart(
+                                    title: 'Accuracy',
+                                    values: const ['Chemistry', 'Mathematics', 'Physics'],
+                                    vals: [
+                                      t.chemAcc * 100,
+                                      t.mathAcc * 100,
+                                      t.phyAcc * 100,
+                                    ],
+                                    totals: const [100, 100, 100],
+                                    colors: const [
+                                      Color(0xFFF5A65B),
+                                      Color(0xFF8FE3DC),
+                                      Color(0xFFF58C95),
+                                    ],
+                                    yLabel: (v) => '${v.toInt()}%',
+                                  )
+                                : _BarChart(
+                                    title: 'Time (min)',
+                                    values: const ['Chemistry', 'Mathematics', 'Physics'],
+                                    vals: [
+                                      t.chemTimeMin.toDouble(),
+                                      t.mathTimeMin.toDouble(),
+                                      t.phyTimeMin.toDouble(),
+                                    ],
+                                    totals: [
+                                      t.totalTimeMin.toDouble(),
+                                      t.totalTimeMin.toDouble(),
+                                      t.totalTimeMin.toDouble(),
+                                    ],
+                                    colors: const [
+                                      Color(0xFFF5A65B),
+                                      Color(0xFF8FE3DC),
+                                      Color(0xFFF58C95),
+                                    ],
+                                    yLabel: (v) => v.toInt().toString(),
+                                  ),
                       ),
                     ],
                   ),
@@ -138,7 +184,30 @@ class AnalysisScreen extends StatelessWidget {
     );
   }
 
-  Widget _scoreRow() {
+  Widget _pill(String label, int i) {
+    final selected = _tab == i;
+    return GestureDetector(
+      onTap: () => setState(() => _tab = i),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: selected ? const Color(0xFF1FA9E8) : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: const Color(0xFFE0E0E0)),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: selected ? Colors.white : const Color(0xFF333333),
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _scoreRow(TestItem t) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -148,7 +217,7 @@ class AnalysisScreen extends StatelessWidget {
             height: 150,
             child: CustomPaint(
               painter: _GaugePainter(
-                percent: test.score / test.totalMarks,
+                percent: t.score / t.totalMarks,
                 color: const Color(0xFF1FA9E8),
               ),
               child: Center(
@@ -164,7 +233,7 @@ class AnalysisScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${test.score}/${test.totalMarks}',
+                      '${t.score}/${t.totalMarks}',
                       style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
@@ -182,14 +251,12 @@ class AnalysisScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _scoreItem(
-                  Icons.check_circle, Colors.green, '${test.correct}', 'Correct'),
+              _scoreItem(Icons.check_circle, Colors.green, '${t.correct}', 'Correct'),
               const SizedBox(height: 14),
-              _scoreItem(
-                  Icons.cancel, Colors.red, '${test.incorrect}', 'Incorrect'),
+              _scoreItem(Icons.cancel, Colors.red, '${t.incorrect}', 'Incorrect'),
               const SizedBox(height: 14),
               _scoreItem(Icons.info_outline, Colors.blueGrey,
-                  '${test.unattempted}', 'Unattempted'),
+                  '${t.unattempted}', 'Unattempted'),
             ],
           ),
         ),
@@ -211,7 +278,7 @@ class AnalysisScreen extends StatelessWidget {
     );
   }
 
-  Widget _airCard() {
+  Widget _airCard(TestItem t) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 18),
@@ -226,14 +293,13 @@ class AnalysisScreen extends StatelessWidget {
           Positioned(
             left: -10,
             top: -10,
-            child: Icon(Icons.star,
-                size: 80, color: Colors.white.withOpacity(0.18)),
+            child: Icon(Icons.star, size: 80, color: Colors.white.withValues(alpha: 0.18)),
           ),
           Positioned(
             right: 20,
             bottom: -8,
             child: Icon(Icons.star_border,
-                size: 70, color: Colors.white.withOpacity(0.18)),
+                size: 70, color: Colors.white.withValues(alpha: 0.18)),
           ),
           Column(
             children: [
@@ -243,7 +309,7 @@ class AnalysisScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                '${test.airRank}',
+                '${t.airRank}',
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 44,
@@ -257,7 +323,7 @@ class AnalysisScreen extends StatelessWidget {
     );
   }
 
-  Widget _ranksRow() {
+  Widget _ranksRow(TestItem t) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -267,11 +333,11 @@ class AnalysisScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _rankItem('State Rank', test.stateRank),
+          _rankItem('State Rank', t.stateRank),
           _rankDivider(),
-          _rankItem('Batch Rank', test.batchRank),
+          _rankItem('Batch Rank', t.batchRank),
           _rankDivider(),
-          _rankItem('Branch Rank', test.branchRank),
+          _rankItem('Branch Rank', t.branchRank),
         ],
       ),
     );
@@ -294,53 +360,8 @@ class AnalysisScreen extends StatelessWidget {
       ],
     );
   }
-
-  Widget _tabLabel(String label, bool selected) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: selected ? const Color(0xFF1FA9E8) : Colors.transparent,
-              width: 2.5,
-            ),
-          ),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: selected ? const Color(0xFF1FA9E8) : const Color(0xFF666666),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _pillTab(String label, bool selected) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: selected ? const Color(0xFF1FA9E8) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFE0E0E0)),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: selected ? Colors.white : const Color(0xFF333333),
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
 }
 
-// ===== Half-circle gauge =====
 class _GaugePainter extends CustomPainter {
   final double percent;
   final Color color;
@@ -368,12 +389,10 @@ class _GaugePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     canvas.drawArc(rect, mmath.pi, mmath.pi * percent, false, fg);
 
-    // End dot
     final angle = mmath.pi + mmath.pi * percent;
     final cx = size.width / 2 + (size.width / 2 - stroke / 2) * mmath.cos(angle);
     final cy = size.height + (size.height - stroke / 2) * mmath.sin(angle);
-    canvas.drawCircle(Offset(cx, cy), stroke / 2 + 1,
-        Paint()..color = color);
+    canvas.drawCircle(Offset(cx, cy), stroke / 2 + 1, Paint()..color = color);
   }
 
   @override
@@ -381,99 +400,116 @@ class _GaugePainter extends CustomPainter {
       oldDelegate.percent != percent || oldDelegate.color != color;
 }
 
-// ===== Bar chart =====
 class _BarChart extends StatelessWidget {
-  final double chem, math, phy;
-  final double chemTotal, mathTotal, phyTotal;
+  final String title;
+  final List<String> values;
+  final List<double> vals;
+  final List<double> totals;
+  final List<Color> colors;
+  final String Function(double) yLabel;
   const _BarChart({
-    required this.chem,
-    required this.math,
-    required this.phy,
-    required this.chemTotal,
-    required this.mathTotal,
-    required this.phyTotal,
+    required this.title,
+    required this.values,
+    required this.vals,
+    required this.totals,
+    required this.colors,
+    required this.yLabel,
   });
 
   @override
   Widget build(BuildContext context) {
-    final maxV = mmath.max(chemTotal, mmath.max(mathTotal, phyTotal));
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+    final maxV = mmath.max(totals[0], mmath.max(totals[1], totals[2]));
+    // Build 5 Y ticks: 0, .25, .5, .75, 1.0
+    final ticks = [0.0, 0.25, 0.5, 0.75, 1.0];
+    return Column(
       children: [
-        // Y axis
         SizedBox(
-          width: 28,
           height: 200,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [maxV, maxV * 0.75, maxV * 0.5, maxV * 0.25, 0]
-                .map((v) => Text(
-                      v.toInt().toString(),
-                      style: const TextStyle(
-                          fontSize: 10, color: Color(0xFF888888)),
-                    ))
-                .toList(),
-          ),
-        ),
-        const SizedBox(width: 6),
-        Expanded(
-          child: Column(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Y axis
               SizedBox(
-                height: 200,
-                child: Row(
+                width: 32,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _bar('Chemistry', chem, chemTotal, const Color(0xFFF5A65B)),
-                    _bar('Mathematics', math, mathTotal,
-                        const Color(0xFF8FE3DC)),
-                    _bar('Physics', phy, phyTotal, const Color(0xFFF58C95)),
-                  ],
+                  children: ticks
+                      .map((t) => Text(
+                            yLabel(maxV * t),
+                            style: const TextStyle(
+                                fontSize: 10, color: Color(0xFF888888)),
+                          ))
+                      .toList(),
                 ),
               ),
-              const SizedBox(height: 6),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: const [
-                  Text('Chemistry',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF333333))),
-                  Text('Mathematics',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF333333))),
-                  Text('Physics',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF333333))),
-                ],
+              const SizedBox(width: 6),
+              // Plot area
+              Expanded(
+                child: Stack(
+                  children: [
+                    // Grid lines
+                    Positioned.fill(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: List.generate(
+                          5,
+                          (_) => Container(
+                            height: 1,
+                            color: const Color(0xFFEDEDED),
+                          ),
+                        ),
+                      ),
+                    ),
+                    // Bars
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: List.generate(3, (i) {
+                        final v = vals[i];
+                        final tot = totals[i];
+                        final h = (v / tot) * 180;
+                        final label = vals[i] == tot.toDouble()
+                            ? '${v.toInt()}/ ${tot.toInt()}'
+                            : '${v.toStringAsFixed(vals[i] < 100 && vals[i] != vals[i].toInt() ? 1 : 0)}${title == "Accuracy" ? "%" : "/ ${tot.toInt()}"}';
+                        return Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  title == 'Accuracy'
+                                      ? '${v.toStringAsFixed(1)}%'
+                                      : '${v.toInt()}/ ${tot.toInt()}',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF222222),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Container(width: 22, height: h, color: colors[i]),
+                              ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
         ),
+        const SizedBox(height: 6),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: values
+              .map((v) => Text(v,
+                  style: const TextStyle(fontSize: 12, color: Color(0xFF333333))))
+              .toList(),
+        ),
       ],
     );
   }
-
-  Widget _bar(String label, double v, double total, Color color) {
-    final h = (v / total) * 180;
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Text(
-              '${v.toInt()}/ ${total.toInt()}',
-              style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF222222),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Container(width: 22, height: h, color: color),
-          ],
-        ),
-      ),
-    );
-  }
 }
-
-

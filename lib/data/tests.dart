@@ -1,256 +1,281 @@
 import '../models/test_item.dart';
 
+// JEE Advanced Paper: 360 marks (Phy 120, Chem 120, Math 120), 30 Q each subject
+// JEE Main: 300 marks (Phy/Che/Math 100 each), 25 Q each subject
+// Total time always 180 min. Distribution: Math > Phy > Chem
+// Wrongs only in Chem/Physics (no Math wrongs), max 1 wrong, no unattempted
+// AIR: 1-3, State Rank: 1 or 2
+
 List<TestItem> getTests() {
-  // Total marks rules:
-  //  AIATS / Practice Test / Term Exam (Paper-2, Paper-1) -> 360 (JEE Advanced)
-  //  AIATS-XX (JEE Main), UT-01 (JEE Main) -> 300 (JEE Main)
-  // Wrong every ~3-5 tests -> score = total - 5
-  // Last two tests: Test#17 full marks (AIR 1), Test#18 with -5 (AIR 2, State/Batch ranks)
-
   return [
-    // 1 - full marks
-    TestItem(
+    // 1
+    _t(
       title: 'AIATS - AIATS-01 (Paper-2)',
-      dateRange: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: true,
-      totalMarks: 360,
+      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
+      total: 360,
       score: 360,
-      correct: 90,
-      incorrect: 0,
-      unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      correct: 90, incorrect: 0, unattempted: 0,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 2 - full marks
-    TestItem(
+    // 2
+    _t(
       title: 'AIATS - AIATS-01 (Paper-1)',
-      dateRange: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: true,
-      totalMarks: 360,
+      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
+      total: 360,
       score: 360,
-      correct: 90,
-      incorrect: 0,
-      unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      correct: 90, incorrect: 0, unattempted: 0,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 3 - full marks
-    TestItem(
+    // 3 — AIATS-01 (note: no paper, original) — 1 wrong in Chem
+    _t(
       title: 'AIATS - AIATS-01',
-      dateRange: "16 Aug'26, 9:00 AM - 18 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
-      score: 360,
-      correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
-      chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      date: "16 Aug'26, 9:00 AM - 18 Aug'26, 9:00 AM",
+      total: 360,
+      score: 356,
+      correct: 89, incorrect: 1, unattempted: 0,
+      air: 3, state: 2, batch: 1, branch: 1,
+      chemScore: 116, mathScore: 120, phyScore: 120,
+      chemC: 29, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 4 - full marks
-    TestItem(
+    // 4
+    _t(
       title: 'AIATS - Practice Test-01',
-      dateRange: "10 Aug'26, 9:00 AM - 12 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "10 Aug'26, 9:00 AM - 12 Aug'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 5 - WRONG (-5) - ~5 tests in
-    TestItem(
+    // 5 — wrong in Phy
+    _t(
       title: 'Term Exam - TE-01 (Paper-2)',
-      dateRange: "09 Aug'26, 9:00 AM - 11 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
-      score: 355,
-      correct: 88, incorrect: 1, unattempted: 1,
-      airRank: 8, stateRank: 2, batchRank: 1, branchRank: 1,
-      chemScore: 115, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      date: "09 Aug'26, 9:00 AM - 11 Aug'26, 9:00 AM",
+      total: 360,
+      score: 356,
+      correct: 89, incorrect: 1, unattempted: 0,
+      air: 2, state: 2, batch: 1, branch: 1,
+      chemScore: 120, mathScore: 120, phyScore: 116,
+      chemC: 30, mathC: 30, phyC: 29, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 6 - full marks
-    TestItem(
+    // 6
+    _t(
       title: 'Term Exam - TE-01 (Paper-1)',
-      dateRange: "09 Aug'26, 9:00 AM - 11 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "09 Aug'26, 9:00 AM - 11 Aug'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 7 - full marks
-    TestItem(
+    // 7 — JEE Main
+    _t(
       title: 'Unit Test - UT-01 (JEE Main)',
-      dateRange: "13 Jun'26, 9:00 AM - 15 Jun'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: true,
-      totalMarks: 300,
+      date: "13 Jun'26, 9:00 AM - 15 Jun'26, 9:00 AM",
+      total: 300,
       score: 300,
       correct: 75, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 100, mathScore: 100, phyScore: 100,
-      chemTotal: 100, mathTotal: 100, phyTotal: 100,
+      chemC: 25, mathC: 25, phyC: 25, q: 25,
+      chemT: 50, mathT: 70, phyT: 60,
+      jeeMain: true,
     ),
-    // 8 - full marks
-    TestItem(
+    // 8
+    _t(
       title: 'AIATS - AIATS-03 (Paper-2)',
-      dateRange: "22 Mar'26, 9:00 AM - 24 Mar'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "22 Mar'26, 9:00 AM - 24 Mar'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 9 - WRONG (-5)
-    TestItem(
+    // 9 — wrong in Physics
+    _t(
       title: 'AIATS - AIATS-03 (Paper-1)',
-      dateRange: "22 Mar'26, 9:00 AM - 24 Mar'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
-      score: 355,
-      correct: 88, incorrect: 1, unattempted: 1,
-      airRank: 12, stateRank: 3, batchRank: 1, branchRank: 1,
-      chemScore: 120, mathScore: 115, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      date: "22 Mar'26, 9:00 AM - 24 Mar'26, 9:00 AM",
+      total: 360,
+      score: 356,
+      correct: 89, incorrect: 1, unattempted: 0,
+      air: 2, state: 2, batch: 1, branch: 1,
+      chemScore: 120, mathScore: 120, phyScore: 116,
+      chemC: 30, mathC: 30, phyC: 29, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 10 - full marks
-    TestItem(
+    // 10 — JEE Main
+    _t(
       title: 'AIATS - AIATS-03 (JEE Main)',
-      dateRange: "15 Mar'26, 9:00 AM - 17 Mar'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: true,
-      totalMarks: 300,
+      date: "15 Mar'26, 9:00 AM - 17 Mar'26, 9:00 AM",
+      total: 300,
       score: 300,
       correct: 75, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 100, mathScore: 100, phyScore: 100,
-      chemTotal: 100, mathTotal: 100, phyTotal: 100,
+      chemC: 25, mathC: 25, phyC: 25, q: 25,
+      chemT: 50, mathT: 70, phyT: 60,
+      jeeMain: true,
     ),
-    // 11 - full marks
-    TestItem(
+    // 11
+    _t(
       title: 'AIATS - AIATS-02 (Paper-2)',
-      dateRange: "08 Mar'26, 9:00 AM - 10 Mar'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "08 Mar'26, 9:00 AM - 10 Mar'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 12 - full marks
-    TestItem(
+    // 12
+    _t(
       title: 'AIATS - AIATS-02 (Paper-1)',
-      dateRange: "08 Mar'26, 9:00 AM - 10 Mar'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "08 Mar'26, 9:00 AM - 10 Mar'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 13 - WRONG (-5)
-    TestItem(
+    // 13 — JEE Main, wrong in Chem
+    _t(
       title: 'AIATS - AIATS-02 (JEE Main)',
-      dateRange: "01 Mar'26, 9:00 AM - 03 Mar'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 300,
-      score: 295,
-      correct: 73, incorrect: 1, unattempted: 1,
-      airRank: 15, stateRank: 4, batchRank: 1, branchRank: 1,
-      chemScore: 95, mathScore: 100, phyScore: 100,
-      chemTotal: 100, mathTotal: 100, phyTotal: 100,
+      date: "01 Mar'26, 9:00 AM - 03 Mar'26, 9:00 AM",
+      total: 300,
+      score: 296,
+      correct: 74, incorrect: 1, unattempted: 0,
+      air: 3, state: 2, batch: 1, branch: 1,
+      chemScore: 96, mathScore: 100, phyScore: 100,
+      chemC: 24, mathC: 25, phyC: 25, q: 25,
+      chemT: 50, mathT: 70, phyT: 60,
+      jeeMain: true,
     ),
-    // 14 - full marks
-    TestItem(
+    // 14
+    _t(
       title: 'Practice Test - Practice Test-06 (Paper-2)',
-      dateRange: "23 Feb'26, 9:00 AM - 25 Feb'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "23 Feb'26, 9:00 AM - 25 Feb'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // 15 - full marks
-    TestItem(
+    // 15
+    _t(
       title: 'Practice Test - Practice Test-06 (Paper-1)',
-      dateRange: "23 Feb'26, 9:00 AM - 25 Feb'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: false,
-      totalMarks: 360,
+      date: "23 Feb'26, 9:00 AM - 25 Feb'26, 9:00 AM",
+      total: 360,
       score: 360,
       correct: 90, incorrect: 0, unattempted: 0,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
+      air: 1, state: 1, batch: 1, branch: 1,
       chemScore: 120, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      chemC: 30, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-
-    // ============== Latest two ==============
-    // Second-to-last -> 1 wrong (-5 marks), AIR 1, all ranks 1
-    TestItem(
+    // === Latest two ===
+    // Second-to-last: 1 wrong in Chem, AIR 1, all ranks 1
+    _t(
       title: 'AIATS - AIATS-01 (Paper-2)',
-      dateRange: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: true,
-      totalMarks: 360,
-      score: 355,
-      correct: 88, incorrect: 1, unattempted: 1,
-      airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
-      chemScore: 120, mathScore: 115, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
+      total: 360,
+      score: 356,
+      correct: 89, incorrect: 1, unattempted: 0,
+      air: 1, state: 1, batch: 1, branch: 1,
+      chemScore: 116, mathScore: 120, phyScore: 120,
+      chemC: 29, mathC: 30, phyC: 30, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
-    // Last -> -5 marks, AIR 2, State 1, Batch 1
-    TestItem(
+    // Last: 1 wrong in Phy, AIR 2, State 1, Batch 1
+    _t(
       title: 'AIATS - AIATS-01 (Paper-1)',
-      dateRange: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
-      mode: 'Online',
-      subjects: 'Physics, Chemistry, Mathematics',
-      hasAnalysis: true,
-      totalMarks: 360,
-      score: 355,
-      correct: 88, incorrect: 1, unattempted: 1,
-      airRank: 2, stateRank: 1, batchRank: 1, branchRank: 1,
-      chemScore: 115, mathScore: 120, phyScore: 120,
-      chemTotal: 120, mathTotal: 120, phyTotal: 120,
+      date: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
+      total: 360,
+      score: 356,
+      correct: 89, incorrect: 1, unattempted: 0,
+      air: 2, state: 1, batch: 1, branch: 1,
+      chemScore: 120, mathScore: 120, phyScore: 116,
+      chemC: 30, mathC: 30, phyC: 29, q: 30,
+      chemT: 50, mathT: 70, phyT: 60,
     ),
   ];
+}
+
+TestItem _t({
+  required String title,
+  required String date,
+  required int total,
+  required int score,
+  required int correct,
+  required int incorrect,
+  required int unattempted,
+  required int air,
+  required int state,
+  required int batch,
+  required int branch,
+  required int chemScore,
+  required int mathScore,
+  required int phyScore,
+  required int chemC,
+  required int mathC,
+  required int phyC,
+  required int q,
+  required int chemT,
+  required int mathT,
+  required int phyT,
+  bool jeeMain = false,
+}) {
+  final chemTotal = jeeMain ? 100 : 120;
+  final mathTotal = jeeMain ? 100 : 120;
+  final phyTotal = jeeMain ? 100 : 120;
+  return TestItem(
+    title: title,
+    dateRange: date,
+    mode: 'Online',
+    subjects: 'Physics, Chemistry, Mathematics',
+    hasAnalysis: true,
+    totalMarks: total,
+    score: score,
+    correct: correct,
+    incorrect: incorrect,
+    unattempted: unattempted,
+    airRank: air,
+    stateRank: state,
+    batchRank: batch,
+    branchRank: branch,
+    chemScore: chemScore,
+    mathScore: mathScore,
+    phyScore: phyScore,
+    chemTotal: chemTotal,
+    mathTotal: mathTotal,
+    phyTotal: phyTotal,
+    chemCorrect: chemC,
+    chemQuestions: q,
+    mathCorrect: mathC,
+    mathQuestions: q,
+    phyCorrect: phyC,
+    phyQuestions: q,
+    chemTimeMin: chemT,
+    mathTimeMin: mathT,
+    phyTimeMin: phyT,
+    totalTimeMin: chemT + mathT + phyT,
+  );
 }

@@ -18,7 +18,12 @@ class HomeScreen extends StatelessWidget {
           child: Row(
             children: [
               const SizedBox(width: 12),
-              Icon(Icons.arrow_back_ios, color: Colors.black87, size: 20),
+              IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.black87, size: 20),
+                onPressed: () {},
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+              ),
               const Spacer(),
               const Text(
                 'Scheduled Tests',
@@ -34,61 +39,16 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 16),
-          // Tabs: Live / Upcoming / Past (Past selected like demo)
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEFEFEF),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Row(
-              children: [
-                _tab('Live', false),
-                _tab('Upcoming', false),
-                _tab('Past', true),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: tests.length,
-              itemBuilder: (context, i) {
-                final t = tests[i];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 14),
-                  child: _TestCard(test: t),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _tab(String label, bool selected) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(
-          color: selected ? const Color(0xFF1FA9E8) : Colors.transparent,
-          borderRadius: BorderRadius.circular(25),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          label,
-          style: TextStyle(
-            color: selected ? Colors.white : const Color(0xFF7A7A7A),
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
-          ),
-        ),
+      body: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        itemCount: tests.length,
+        itemBuilder: (context, i) {
+          final t = tests[i];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 14),
+            child: _TestCard(test: t),
+          );
+        },
       ),
     );
   }
@@ -106,7 +66,7 @@ class _TestCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -135,29 +95,25 @@ class _TestCard extends StatelessWidget {
           SizedBox(
             height: 36,
             child: ElevatedButton(
-              onPressed: test.hasAnalysis
-                  ? () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => AnalysisScreen(test: test),
-                        ),
-                      );
-                    }
-                  : null,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => AnalysisScreen(test: test),
+                  ),
+                );
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1FA9E8),
-                disabledBackgroundColor: const Color(0xFF1FA9E8),
-                disabledForegroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 elevation: 0,
               ),
-              child: Text(
-                test.hasAnalysis ? 'View Analysis' : 'Start Test',
-                style: const TextStyle(
+              child: const Text(
+                'View Analysis',
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
