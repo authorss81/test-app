@@ -1,0 +1,28 @@
+# misc
+.DS_Store
+Thumbs.db
+*.log
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Android
+android/.gradle/
+android/local.properties
+android/build/
+android/app/build/
+android/key.properties
+
+# Generated icons
+assets/icon/generate*.py
