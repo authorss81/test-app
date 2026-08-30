@@ -224,7 +224,7 @@ List<TestItem> getTests() {
     ),
 
     // ============== Latest two ==============
-    // Second-to-last -> full marks, AIR 1, all ranks 1
+    // Second-to-last -> 1 wrong (-5 marks), AIR 1, all ranks 1
     TestItem(
       title: 'AIATS - AIATS-01 (Paper-2)',
       dateRange: "23 Aug'26, 9:00 AM - 25 Aug'26, 9:00 AM",
@@ -232,10 +232,10 @@ List<TestItem> getTests() {
       subjects: 'Physics, Chemistry, Mathematics',
       hasAnalysis: true,
       totalMarks: 360,
-      score: 360,
-      correct: 90, incorrect: 0, unattempted: 0,
+      score: 355,
+      correct: 88, incorrect: 1, unattempted: 1,
       airRank: 1, stateRank: 1, batchRank: 1, branchRank: 1,
-      chemScore: 120, mathScore: 120, phyScore: 120,
+      chemScore: 120, mathScore: 115, phyScore: 120,
       chemTotal: 120, mathTotal: 120, phyTotal: 120,
     ),
     // Last -> -5 marks, AIR 2, State 1, Batch 1
